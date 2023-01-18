@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: yoshiyasu1111/cmake:v3.25.1
+          tags: yoshiyasu1111/cmake-ninja:v3.25.1-v1.11.1
