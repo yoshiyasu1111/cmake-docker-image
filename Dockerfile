@@ -1,7 +1,6 @@
 FROM ubuntu:22.04
 
-RUN perl -p -i.bak -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|security\.ubuntu\.com)[^\s]+%$1http://linux.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%' /etc/apt/sources.list \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install -y g++ wget make libssl-dev python3 re2c \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && wget https://github.com/Kitware/CMake/releases/download/v3.25.1/cmake-3.25.1.tar.gz \
@@ -19,6 +18,6 @@ RUN perl -p -i.bak -e 's%(deb(?:-src|)\s+)https?://(?!archive\.canonical\.com|se
     && mv ninja /usr/local/bin/ \
     && cd .. \
     && rm -fr ninja-1.11.1/ v1.11.1.tar.gz \
-    && apt-get purge -y g++ wget make libssl-dev \
+    && apt-get purge -y g++ wget make libssl-dev python3 re2c \
     && apt-get autoremove -y \
-    && rm -fr /var/lib/apt/lists/*
+    && rm -fr /var/lib/apt/lists/* /usr/bin/python
