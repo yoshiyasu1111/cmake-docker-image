@@ -1,23 +1,23 @@
 FROM ubuntu:22.04
 
 RUN apt-get update \
-    && apt-get install -y g++ wget make libssl-dev python3 re2c \
-    && ln -s /usr/bin/python3 /usr/bin/python \
-    && wget https://github.com/Kitware/CMake/releases/download/v3.25.1/cmake-3.25.1.tar.gz \
-    && tar xzf cmake-3.25.1.tar.gz \
-    && cd cmake-3.25.1 \
+    && apt-get install curl g++ make libssl-dev re2c \
+    && curl -OL https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3.tar.gz \
+    && tar xf cmake-3.28.3.tar.gz \
+    && cd cmake-3.28.3 \
     && ./bootstrap \
     && make -j`nproc` \
     && make install \
     && cd .. \
-    && rm -fr cmake-3.25.1* \
-    && wget https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz \
-    && tar xzf v1.11.1.tar.gz \
+    && rm -fr cmake-3.28.3* \
+    && curl -OL https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz \
+    && tar xf v1.11.1.tar.gz \
     && cd ninja-1.11.1/ \
-    && ./configure.py --bootstrap \
-    && mv ninja /usr/local/bin/ \
+    && cmake -B build-cmake \
+    && cmake --build build-cmake \
+    && cmake --install ./build-cmake \
     && cd .. \
     && rm -fr ninja-1.11.1/ v1.11.1.tar.gz \
-    && apt-get purge -y g++ wget make libssl-dev python3 re2c \
+    && apt-get purge -y curl make libssl-dev re2c \
     && apt-get autoremove -y \
-    && rm -fr /var/lib/apt/lists/* /usr/bin/python
+    && rm -fr /var/lib/apt/lists/*
